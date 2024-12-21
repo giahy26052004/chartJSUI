@@ -25,8 +25,8 @@ ChartJS.register(
 );
 
 const LineChart = () => {
-  const [total, setTotal] = useState(0);
-  const [change, setChange] = useState(0);
+  const [total, setTotal] = useState(3444); // Initial total value
+  const [change, setChange] = useState(0); // Initial change value
   const [priceColor, setPriceColor] = useState("#00FF00");
   const [chartData, setChartData] = useState({
     labels: [
@@ -75,8 +75,12 @@ const LineChart = () => {
     ],
   });
 
+  // Variable to store the timeout reference
+  const timeoutRef = useRef(null);
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    // Function to update chart data with a delay
+    const updateChartData = () => {
       setChartData((prevData) => {
         const newTime = new Date().toLocaleTimeString().slice(0, 8);
         const newValue =
@@ -85,11 +89,21 @@ const LineChart = () => {
         const newLabels = [...prevData.labels, newTime];
         const newData = [...prevData.datasets[0].data, newValue];
 
+        // Update priceColor and total change
         const lastValue =
           prevData.datasets[0].data[prevData.datasets[0].data.length - 1];
         const newPriceColor = newValue > lastValue ? "#00FF00" : "#FF0000";
         setPriceColor(newPriceColor);
 
+        // Update total and change
+        const newTotal = newData[newData.length - 1];
+        const newChange =
+          newData[newData.length - 1] - newData[newData.length - 2];
+
+        setTotal(newTotal);
+        setChange(newChange);
+
+        // Keep the number of labels and data points below a certain number (e.g., 10)
         if (newLabels.length > 10) {
           newLabels.shift();
           newData.shift();
@@ -100,9 +114,17 @@ const LineChart = () => {
           datasets: [{ ...prevData.datasets[0], data: newData }],
         };
       });
-    }, 500); // Update every 500ms to simulate the drawing effect (can adjust this speed)
-    return () => clearInterval(interval);
-  }, []);
+
+      // Call this function again with a delay of 2 seconds (2000ms)
+      timeoutRef.current = setTimeout(updateChartData, 2000); // 2 seconds delay
+    };
+
+    // Start the first update
+    timeoutRef.current = setTimeout(updateChartData, 2000);
+
+    // Cleanup on component unmount
+    return () => clearTimeout(timeoutRef.current);
+  }, []); // Empty dependency array to run only once when the component mounts
 
   const chartRef = useRef(null);
 
@@ -170,9 +192,11 @@ const LineChart = () => {
   return (
     <div className="chart-container">
       <p className="current-price" style={{ color: priceColor }}>
-        ${total}
+        ${total.toFixed(2)}
       </p>
-      <p className="change">{change} USD</p>
+      <p className="change">
+        {change >= 0 ? `+${change.toFixed(2)}` : `${change.toFixed(2)}`} USD
+      </p>
       <Line ref={chartRef} data={chartData} options={options} />
     </div>
   );
