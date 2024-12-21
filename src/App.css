@@ -1,0 +1,63 @@
+/* src/App.css */
+@import url("https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&family=Yantramanav:wght@100;300;400;500;700;900&display=swap");
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #1e1e1e;
+  color: #fff;
+  font-family: "Yantramanav", serif;
+}
+
+.chart-container {
+  width: 1000px;
+  padding: 0px 40px;
+  background-color: #111927;
+  border-radius: 10px;
+}
+.price-change {
+  width: 80px;
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  background-color: #fff;
+}
+.chart-container h2 {
+  margin-bottom: 10px;
+}
+
+.current-price {
+  color: #ccfd07;
+  font-size: 3rem;
+  line-height: 3rem;
+  font-family: "Yantramanav", serif;
+
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  transform: translateY(4px);
+  font-weight: 700;
+  font-feature-settings: "tnum", "lnum";
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.details p {
+  margin: 0 10px;
+}
+
+.change {
+  color: #00ff00; /* Green color for positive change */
+}
+
+.time-left,
+.payout,
+.amount {
+  font-size: 16px;
+  color: #ff0000; /* Red color */
+}
