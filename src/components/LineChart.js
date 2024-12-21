@@ -26,7 +26,7 @@ ChartJS.register(
 
 const LineChart = () => {
   const [total, setTotal] = useState(0); // Total value to display on the chart
-  const [previousTotal, setPreviousTotal] = useState(0); // To track the previous value
+
   const [change, setChange] = useState(0); // To track the change in value
   const chartRef = useRef(null); // Create a ref for the chart instance
 
@@ -190,7 +190,6 @@ const LineChart = () => {
       const changeInValue = lastValue - (previousValue || lastValue); // Make sure previousTotal is handled
 
       // Update the change state
-      setPreviousTotal(lastValue);
 
       setTotal(lastValue.toFixed(2)); // Update the displayed total value
       setChange(changeInValue.toFixed(2)); // Update the displayed change
